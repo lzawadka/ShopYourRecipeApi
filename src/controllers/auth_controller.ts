@@ -1,21 +1,24 @@
 import { Request, Response } from 'express';
-import { userService } from '../repositories/user_repositorie';
+import { userRepositorie } from '../repositories/user_repositorie';
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { ApiResponse } from '../models/ApiResponse';
+import { shoppingListRepositorie } from '../repositories/shopping_list_repositorie';
 
 export const createUser = async (req: Request, res: Response) => {
     try {
       const { email } = req.body;
   
       // Vérifier si l'utilisateur existe déjà
-      let user = await userService.getUserByMail(email);
+      let user = await userRepositorie.getUserByMail(email);
       if (user) {
         return res.status(409).json({ code: 409, message: "Cet utilisateur existe déjà", data: null } as ApiResponse<null>);
       }
       // Créer un nouvel utilisateur
-      user = await userService.createUser(req.body);
-  
+      user = await userRepositorie.createUser(req.body);
+      const shoppingList =  await shoppingListRepositorie.createShoppingList(user._id);
+      await userRepositorie.updateShoopingListUser(shoppingList._id, user._id);
+
       // Créer un token JWT
       const payload = {
         user: {
@@ -43,7 +46,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     // Vérifier si l'utilisateur existe
-    const user = await userService.getUserByMail(email);
+    const user = await userRepositorie.getUserByMail(email);
     if (!user) {
       return res.status(400).json({ code: 400, message: "Identifiants invalides", data: null } as ApiResponse<null>);
     }

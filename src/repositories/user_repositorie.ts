@@ -1,14 +1,17 @@
 import { IUser, User } from "../models/User/User";
 import bcrypt from "bcryptjs";
+import { ObjectId, Types } from "mongoose";
 
-export const userService = {
+export const userRepositorie = {
   getUserById,
   getUserByMail,
-  createUser
+  createUser,
+  updateShoopingListUser
 };
 
 async function getUserById(userId: string): Promise<IUser | null> {
-  const user = await User.findById(userId);
+  let userIdObject = new Types.ObjectId(userId);
+  const user = await User.findById(userIdObject);
   return user;
 }
 
@@ -34,4 +37,14 @@ async function createUser(user: IUser): Promise<IUser> {
 async function getUserByMail(email: string): Promise<IUser | null>{
   const user = await User.findOne({email});
   return user;
+}
+
+async function updateShoopingListUser(shoppingListId: Types.ObjectId, userId: Types.ObjectId): Promise<void> {
+  const user = await User.findById(userId);
+  if (user) {
+    user.shoppingList = shoppingListId;
+    await user.save();
+  } else {
+    throw new Error('User not found');
+  }
 }

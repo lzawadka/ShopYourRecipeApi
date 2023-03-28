@@ -1,6 +1,6 @@
 import { Schema, model, Document } from "mongoose";
 import { IIngredient, ingredientSchema } from "./Ingredient";
-import { IStep, stepSchema } from "../Step";
+import { IStep, stepSchema } from "./Step";
 
 interface IRecipe extends Document {
     title: string;

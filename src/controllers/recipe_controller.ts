@@ -2,11 +2,11 @@ import { Request, Response } from 'express';
 import { ApiResponse } from '../models/ApiResponse';
 import { IRecipe } from '../models/Recipe/Recipe';
 import { recipeService } from '../repositories/recipe_repositorie';
-import {userService} from '../repositories/user_repositorie';
+import {userRepositorie} from '../repositories/user_repositorie';
 
 export const createRecipe = async (req: Request, res: Response) => {
     try {
-      const user = await userService.getUserById(req.user.id);
+      const user = await userRepositorie.getUserById(req.user.id);
       if (!user) {
         return res.status(401).json({ msg: 'Utilisateur non autorisé' });
       }
@@ -38,7 +38,7 @@ export const getRecipes = async (req: Request, res: Response) => {
     try {
       // Récupérer les recettes de l'utilisateur connecté
       const recipes = await recipeService.getRecipesForUser(req.user.id);
-  
+    console.log(req.user.id, 'ma bite');
       res.json({ code: 200, message: "Succès", data: recipes} as ApiResponse<Array<IRecipe>>);
     } catch (err: any) {
       console.error(err.message);

@@ -10,8 +10,8 @@ const router = express.Router();
 // Create a Recipe
 router.post('/', auth, createRecipe);
 
-router.get("/", auth, getRecipeById);
+router.get("/", auth, getRecipes);
 
-router.get("/:id", auth, getRecipes);
+router.get("/:id", auth, getRecipeById);
 
 export { router as recipeRoutes };

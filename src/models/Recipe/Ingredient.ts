@@ -1,6 +1,7 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 
 interface IIngredient {
+  _id: Types.ObjectId;
   name: string;
   category: string;
   quantity: number;

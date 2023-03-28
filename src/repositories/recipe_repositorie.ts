@@ -15,6 +15,7 @@ async function getRecipeById(recipeId: string, userId: string): Promise<IRecipe 
 }
 
 async function createRecipe(recipeToCreate: IRecipe, userId: string): Promise<void> {
+    console.log(recipeToCreate)
     const { title, description, ingredients, steps } = recipeToCreate;
   
       const recipe = new Recipe({

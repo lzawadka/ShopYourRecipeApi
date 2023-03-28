@@ -6,6 +6,7 @@ interface IUser {
   lastName: string;
   email: string;
   password: string;
+  shoppingList: Types.ObjectId;
 }
 
 const userSchema = new Schema<IUser>({
@@ -13,6 +14,7 @@ const userSchema = new Schema<IUser>({
   lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  shoppingList: { type: Schema.Types.ObjectId, ref: 'ShoppingList', unique: true }
 });
 
 const User = model<IUser>('User', userSchema);
